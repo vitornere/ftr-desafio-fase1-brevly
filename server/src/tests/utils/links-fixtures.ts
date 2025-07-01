@@ -6,7 +6,7 @@ export function generateFakeLink() {
   return {
     id: faker.string.uuid(),
     originalUrl: faker.internet.url(),
-    shortUrl: `http://localhost:3000/${faker.string.alphanumeric(8)}`,
+    slug: faker.string.alphanumeric(8),
     clicks: faker.number.int({ min: 0, max: 1000 }),
     created_at: faker.date.recent(),
   };
@@ -20,7 +20,7 @@ export async function seedLinks(count = 1) {
     .values(
       links.map((link) => ({
         originalUrl: link.originalUrl,
-        shortUrl: link.shortUrl,
+        slug: link.slug,
         clicks: link.clicks,
       })),
     )

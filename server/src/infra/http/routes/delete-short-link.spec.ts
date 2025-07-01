@@ -5,7 +5,7 @@ import { ShortLinkNotFoundError } from '@/app/functions/errors/short-link-not-fo
 import { makeLeft, makeRight } from '@/shared/either';
 import { buildServer } from '../app';
 
-describe('DELETE /links/:shortUrl', () => {
+describe('DELETE /links/:slug', () => {
   let server: FastifyInstance;
 
   beforeAll(async () => {

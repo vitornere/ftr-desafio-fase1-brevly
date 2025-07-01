@@ -15,7 +15,7 @@ describe('GET /links', () => {
   test('should return all links', async () => {
     const links = Array.from({ length: 3 }, generateFakeLink).map((link) => ({
       originalUrl: link.originalUrl,
-      shortUrl: link.shortUrl,
+      slug: link.slug,
       clicks: link.clicks,
     }));
 

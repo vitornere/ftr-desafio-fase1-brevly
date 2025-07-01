@@ -4,12 +4,12 @@ import { schema } from '@/infra/db/schemas';
 import { type Either, makeRight } from '@/shared/either';
 
 export async function listShortLinks(): Promise<
-  Either<never, { originalUrl: string; shortUrl: string; clicks: number }[]>
+  Either<never, { originalUrl: string; slug: string; clicks: number }[]>
 > {
   const result = await db
     .select({
       originalUrl: schema.links.originalUrl,
-      shortUrl: schema.links.shortUrl,
+      slug: schema.links.slug,
       clicks: schema.links.clicks,
     })
     .from(schema.links)

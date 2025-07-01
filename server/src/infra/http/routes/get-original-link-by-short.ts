@@ -1,33 +1,20 @@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { z } from 'zod/v4';
 import { getOriginalLinkByShort } from '@/app/functions/get-original-link-by-short';
-import {
-  DEFAULT_SHORT_URL_PREFIX,
-  DEFAULT_SHORT_URL_SLUG_REGEX,
-} from '@/constants';
+import { DEFAULT_SHORT_URL_SLUG_REGEX } from '@/constants';
 import { isRight, unwrapEither } from '@/shared/either';
 
 export const getOriginalLinkByShortRoute: FastifyPluginAsyncZod = async (
   server,
 ) => {
   server.get(
-    '/links/:shortUrlSlug',
+    '/links/:slug',
     {
       schema: {
         summary: 'Get original link by short url slug',
         tags: ['links'],
         params: z.object({
-          shortUrlSlug: z.string().refine(
-            (url) => {
-              if (!url.startsWith(DEFAULT_SHORT_URL_PREFIX)) return false;
-
-              const slug = url.replace(DEFAULT_SHORT_URL_PREFIX, '');
-              return DEFAULT_SHORT_URL_SLUG_REGEX.test(slug);
-            },
-            {
-              message: `A URL encurtada deve começar com "${DEFAULT_SHORT_URL_PREFIX}" e conter apenas letras, números, hífens ou underlines após o prefixo.`,
-            },
-          ),
+          slug: z.string().regex(DEFAULT_SHORT_URL_SLUG_REGEX),
         }),
         response: {
           200: z.object({
@@ -40,11 +27,9 @@ export const getOriginalLinkByShortRoute: FastifyPluginAsyncZod = async (
       },
     },
     async (request, reply) => {
-      const { shortUrlSlug } = request.params;
+      const { slug } = request.params;
 
-      const result = await getOriginalLinkByShort({
-        shortUrl: `${DEFAULT_SHORT_URL_PREFIX}${shortUrlSlug}`,
-      });
+      const result = await getOriginalLinkByShort({ slug });
 
       if (isRight(result)) {
         return reply.status(200).send(unwrapEither(result));

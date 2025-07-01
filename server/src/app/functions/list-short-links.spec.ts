@@ -19,17 +19,17 @@ describe('listShortLinks', () => {
     expect(unwrapEither(result)).toEqual([
       {
         originalUrl: links[0].originalUrl,
-        shortUrl: links[0].shortUrl,
+        slug: links[0].slug,
         clicks: links[0].clicks,
       },
       {
         originalUrl: links[1].originalUrl,
-        shortUrl: links[1].shortUrl,
+        slug: links[1].slug,
         clicks: links[1].clicks,
       },
       {
         originalUrl: links[2].originalUrl,
-        shortUrl: links[2].shortUrl,
+        slug: links[2].slug,
         clicks: links[2].clicks,
       },
     ]);

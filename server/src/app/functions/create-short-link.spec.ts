@@ -13,7 +13,7 @@ describe('createShortLink', () => {
   it('should create a short link', async () => {
     const result = await createShortLink({
       originalUrl: 'https://www.google.com',
-      shortUrl: 'https://www.google.com/short',
+      slug: '123',
     });
 
     expect(isRight(result)).toBe(true);
@@ -23,7 +23,7 @@ describe('createShortLink', () => {
   it('should return a duplicated short link error if the short link already exists', async () => {
     const result = await createShortLink({
       originalUrl: 'https://www.google.com',
-      shortUrl: 'https://www.google.com/short',
+      slug: '123',
     });
 
     expect(isLeft(result)).toBe(true);

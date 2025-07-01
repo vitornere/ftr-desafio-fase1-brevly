@@ -10,6 +10,7 @@ import {
 } from 'fastify-type-provider-zod';
 import { createShortLinkRoute } from './routes/create-short-link';
 import { deleteShortLinkRoute } from './routes/delete-short-link';
+import { getOriginalLinkByShortRoute } from './routes/get-original-link-by-short';
 import { listShortLinksRoute } from './routes/list-short-links';
 import { transformSwaggerSchema } from './transform-swagger-schema';
 
@@ -51,6 +52,7 @@ export function buildServer() {
   server.register(createShortLinkRoute);
   server.register(listShortLinksRoute);
   server.register(deleteShortLinkRoute);
+  server.register(getOriginalLinkByShortRoute);
 
   server.register(fastifySwaggerUi, {
     routePrefix: '/docs',

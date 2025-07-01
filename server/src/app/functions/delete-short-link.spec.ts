@@ -19,10 +19,7 @@ describe('deleteShortLink', () => {
   test('should return a right if the short link is found', async () => {
     const links = await seedLinks();
 
-    console.log(links[0].shortUrl);
-    const result = await deleteShortLink(
-      links[0].shortUrl.split('/').pop() ?? '',
-    );
+    const result = await deleteShortLink(links[0].slug);
     expect(isRight(result)).toBe(true);
 
     const resultQuery = await db

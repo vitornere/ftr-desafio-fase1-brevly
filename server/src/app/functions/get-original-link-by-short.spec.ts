@@ -15,7 +15,7 @@ describe('getOriginalLinkByShort', () => {
     const links = await seedLinks();
 
     const result = await getOriginalLinkByShort({
-      shortUrl: links[0].shortUrl,
+      slug: links[0].slug,
     });
 
     expect(isRight(result)).toBe(true);
@@ -26,7 +26,7 @@ describe('getOriginalLinkByShort', () => {
 
   it('should return an error if the short url is not found', async () => {
     const result = await getOriginalLinkByShort({
-      shortUrl: 'http://localhost:3000/non-existent-short-url',
+      slug: 'non-existent-short-url',
     });
 
     expect(isLeft(result)).toBe(true);
