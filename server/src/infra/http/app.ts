@@ -9,6 +9,7 @@ import {
   validatorCompiler,
 } from 'fastify-type-provider-zod';
 import { createShortLinkRoute } from './routes/create-short-link';
+import { listShortLinksRoute } from './routes/list-short-links';
 import { transformSwaggerSchema } from './transform-swagger-schema';
 
 export function buildServer() {
@@ -47,6 +48,7 @@ export function buildServer() {
   });
 
   server.register(createShortLinkRoute);
+  server.register(listShortLinksRoute);
 
   server.register(fastifySwaggerUi, {
     routePrefix: '/docs',
