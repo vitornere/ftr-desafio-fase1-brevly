@@ -24,7 +24,7 @@ describe('POST /links', () => {
       url: '/links',
       body: {
         originalUrl: 'https://www.google.com',
-        shortUrl: 'https://brev.ly/123',
+        shortUrl: 'http://localhost:3000/123',
       },
     });
 
@@ -44,7 +44,7 @@ describe('POST /links', () => {
       url: '/links',
       body: {
         originalUrl: 'https://www.google.com',
-        shortUrl: 'https://brev.ly/123',
+        shortUrl: 'http://localhost:3000/123',
       },
     });
 
