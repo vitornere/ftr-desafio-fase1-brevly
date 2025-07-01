@@ -1,6 +1,6 @@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { z } from 'zod/v4';
-import { deleteShortLink } from '@/app/functions/delete-short-link';
+import { deleteShortLink } from '@/app/functions/links/delete-short-link';
 import { isRight, unwrapEither } from '@/shared/either';
 
 export const deleteShortLinkRoute: FastifyPluginAsyncZod = async (server) => {

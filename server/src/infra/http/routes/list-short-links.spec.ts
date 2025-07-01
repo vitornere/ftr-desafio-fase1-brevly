@@ -1,6 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import { beforeAll, describe, expect, test, vi } from 'vitest';
-import * as listShortLinksModule from '@/app/functions/list-short-links';
+import * as listShortLinksModule from '@/app/functions/links/list-short-links';
 import { makeRight } from '@/shared/either';
 import { generateFakeLink } from '@/tests/utils/links-fixtures';
 import { buildServer } from '../app';

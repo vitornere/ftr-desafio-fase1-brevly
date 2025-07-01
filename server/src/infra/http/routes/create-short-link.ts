@@ -1,6 +1,6 @@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { z } from 'zod/v4';
-import { createShortLink } from '@/app/functions/create-short-link';
+import { createShortLink } from '@/app/functions/links/create-short-link';
 import {
   DEFAULT_SHORT_URL_PREFIX,
   DEFAULT_SHORT_URL_SLUG_REGEX,
