@@ -1,7 +1,7 @@
 import type { FastifyInstance } from 'fastify';
 import { beforeAll, describe, expect, test, vi } from 'vitest';
-import * as createShortLinkModule from '@/app/functions/links/create-short-link';
-import { DuplicatedShortLinkError } from '@/app/functions/links/errors/duplicated-short-link';
+import * as createShortLinkModule from '@/app/functions/create-short-link';
+import { DuplicatedShortLinkError } from '@/app/functions/errors/duplicated-short-link';
 import { makeLeft, makeRight } from '@/shared/either';
 import { buildServer } from '../app';
 

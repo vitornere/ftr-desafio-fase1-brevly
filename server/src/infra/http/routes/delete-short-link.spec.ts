@@ -1,7 +1,7 @@
 import type { FastifyInstance } from 'fastify';
 import { beforeAll, describe, expect, test, vi } from 'vitest';
-import * as deleteShortLinkModule from '@/app/functions/links/delete-short-link';
-import { ShortLinkNotFoundError } from '@/app/functions/links/errors/short-link-not-found';
+import * as deleteShortLinkModule from '@/app/functions/delete-short-link';
+import { ShortLinkNotFoundError } from '@/app/functions/errors/short-link-not-found';
 import { makeLeft, makeRight } from '@/shared/either';
 import { buildServer } from '../app';
 

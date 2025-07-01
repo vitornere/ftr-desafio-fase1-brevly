@@ -1,6 +1,6 @@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { z } from 'zod/v4';
-import { listShortLinks } from '@/app/functions/links/list-short-links';
+import { listShortLinks } from '@/app/functions/list-short-links';
 import { unwrapEither } from '@/shared/either';
 
 export const listShortLinksRoute: FastifyPluginAsyncZod = async (server) => {

@@ -1,22 +1,23 @@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { z } from 'zod/v4';
-import { createShortLink } from '@/app/functions/create-short-link';
+import { getOriginalLinkByShort } from '@/app/functions/get-original-link-by-short';
 import {
   DEFAULT_SHORT_URL_PREFIX,
   DEFAULT_SHORT_URL_SLUG_REGEX,
 } from '@/constants';
 import { isRight, unwrapEither } from '@/shared/either';
 
-export const createShortLinkRoute: FastifyPluginAsyncZod = async (server) => {
-  server.post(
-    '/links',
+export const getOriginalLinkByShortRoute: FastifyPluginAsyncZod = async (
+  server,
+) => {
+  server.get(
+    '/links/:shortUrlSlug',
     {
       schema: {
-        summary: 'Create a short link',
+        summary: 'Get original link by short url slug',
         tags: ['links'],
-        body: z.object({
-          originalUrl: z.url(),
-          shortUrl: z.url().refine(
+        params: z.object({
+          shortUrlSlug: z.string().refine(
             (url) => {
               if (!url.startsWith(DEFAULT_SHORT_URL_PREFIX)) return false;
 
@@ -29,32 +30,33 @@ export const createShortLinkRoute: FastifyPluginAsyncZod = async (server) => {
           ),
         }),
         response: {
-          201: z.object({
-            id: z.string(),
+          200: z.object({
+            originalUrl: z.url(),
           }),
-          400: z.object({
-            message: z.string(),
+          404: z.object({
+            error: z.string(),
           }),
         },
       },
     },
     async (request, reply) => {
-      const { originalUrl, shortUrl } = request.body;
-      const result = await createShortLink({ originalUrl, shortUrl });
+      const { shortUrlSlug } = request.params;
+
+      const result = await getOriginalLinkByShort({
+        shortUrl: `${DEFAULT_SHORT_URL_PREFIX}${shortUrlSlug}`,
+      });
 
       if (isRight(result)) {
-        return reply.status(201).send(unwrapEither(result));
+        return reply.status(200).send(unwrapEither(result));
       }
 
       const error = unwrapEither(result);
 
       switch (error.constructor.name) {
-        case 'DuplicatedShortLinkError':
-          return reply
-            .status(400)
-            .send({ message: 'Short link already exists' });
+        case 'ShortLinkNotFoundError':
+          return reply.status(404).send({ error: error.message });
         default:
-          return reply.status(500).send({ message: 'Internal server error' });
+          return reply.status(500).send({ error: 'Internal server error' });
       }
     },
   );
