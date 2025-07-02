@@ -8,7 +8,7 @@ export function generateFakeLink() {
     originalUrl: faker.internet.url(),
     slug: faker.string.alphanumeric(8),
     clicks: faker.number.int({ min: 0, max: 1000 }),
-    created_at: faker.date.recent(),
+    createdAt: faker.date.recent(),
   };
 }
 

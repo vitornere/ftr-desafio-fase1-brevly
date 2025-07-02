@@ -13,7 +13,7 @@ export async function listShortLinks(): Promise<
       clicks: schema.links.clicks,
     })
     .from(schema.links)
-    .orderBy(desc(schema.links.created_at));
+    .orderBy(desc(schema.links.createdAt));
 
   return makeRight(result);
 }

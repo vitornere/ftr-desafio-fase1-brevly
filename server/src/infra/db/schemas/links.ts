@@ -14,7 +14,7 @@ export const links = pgTable(
     originalUrl: varchar('original_url', { length: 2048 }).notNull(),
     slug: varchar('slug', { length: 255 }).notNull(),
     clicks: integer('clicks').notNull().default(0),
-    created_at: timestamp('created_at', { withTimezone: true })
+    createdAt: timestamp('created_at', { withTimezone: true })
       .notNull()
       .defaultNow(),
   },
