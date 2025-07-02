@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { db } from '@/infra/db';
 import { schema } from '@/infra/db/schemas';
 import { isLeft, isRight, unwrapEither } from '@/shared/either';
@@ -6,7 +6,7 @@ import { createShortLink } from './create-short-link';
 import { DuplicatedShortLinkError } from './errors/duplicated-short-link';
 
 describe('createShortLink', () => {
-  beforeAll(async () => {
+  beforeEach(async () => {
     await db.delete(schema.links);
   });
 
@@ -21,6 +21,10 @@ describe('createShortLink', () => {
   });
 
   it('should return a duplicated short link error if the short link already exists', async () => {
+    await createShortLink({
+      originalUrl: 'https://www.google.com',
+      slug: '123',
+    });
     const result = await createShortLink({
       originalUrl: 'https://www.google.com',
       slug: '123',

@@ -6,11 +6,11 @@ import { isLeft, isRight } from '@/shared/either';
 import { seedLinks } from '@/tests/utils/links-fixtures';
 import { deleteShortLink } from './delete-short-link';
 
-beforeEach(async () => {
-  await db.delete(schema.links);
-});
-
 describe('deleteShortLink', () => {
+  beforeEach(async () => {
+    await db.delete(schema.links);
+  });
+
   test('should return a left if the short link is not found', async () => {
     const result = await deleteShortLink('not-found');
     expect(isLeft(result)).toBe(true);

@@ -1,7 +1,7 @@
 import type { FastifyInstance } from 'fastify';
 import { beforeAll, describe, expect, test, vi } from 'vitest';
 import { ShortLinkNotFoundError } from '@/app/functions/errors/short-link-not-found';
-import * as getOriginalLinkByShortModule from '@/app/functions/get-original-link-by-short';
+import * as getOriginalLinkBySlugModule from '@/app/functions/get-original-link-by-slug';
 import { makeLeft, makeRight } from '@/shared/either';
 import { buildServer } from '../app';
 
@@ -14,8 +14,8 @@ describe('GET /links/:slug', () => {
 
   test('should return the original link', async () => {
     vi.spyOn(
-      getOriginalLinkByShortModule,
-      'getOriginalLinkByShort',
+      getOriginalLinkBySlugModule,
+      'getOriginalLinkBySlug',
     ).mockResolvedValue(
       makeRight({
         originalUrl: 'https://www.google.com',
@@ -35,8 +35,8 @@ describe('GET /links/:slug', () => {
 
   test('should return a 404 if the short link is not found', async () => {
     vi.spyOn(
-      getOriginalLinkByShortModule,
-      'getOriginalLinkByShort',
+      getOriginalLinkBySlugModule,
+      'getOriginalLinkBySlug',
     ).mockResolvedValue(makeLeft(new ShortLinkNotFoundError()));
 
     const response = await server.inject({

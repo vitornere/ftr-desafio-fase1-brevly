@@ -5,11 +5,11 @@ import { isRight, unwrapEither } from '@/shared/either';
 import { seedLinks } from '@/tests/utils/links-fixtures';
 import { listShortLinks } from './list-short-links';
 
-beforeEach(async () => {
-  await db.delete(schema.links);
-});
-
 describe('listShortLinks', () => {
+  beforeEach(async () => {
+    await db.delete(schema.links);
+  });
+
   it('should return all links', async () => {
     const links = await seedLinks(3);
 

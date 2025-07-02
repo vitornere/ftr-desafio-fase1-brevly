@@ -1,10 +1,10 @@
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { z } from 'zod/v4';
-import { getOriginalLinkByShort } from '@/app/functions/get-original-link-by-short';
+import { getOriginalLinkBySlug } from '@/app/functions/get-original-link-by-slug';
 import { DEFAULT_SHORT_URL_SLUG_REGEX } from '@/constants';
 import { isRight, unwrapEither } from '@/shared/either';
 
-export const getOriginalLinkByShortRoute: FastifyPluginAsyncZod = async (
+export const getOriginalLinkBySlugRoute: FastifyPluginAsyncZod = async (
   server,
 ) => {
   server.get(
@@ -29,7 +29,7 @@ export const getOriginalLinkByShortRoute: FastifyPluginAsyncZod = async (
     async (request, reply) => {
       const { slug } = request.params;
 
-      const result = await getOriginalLinkByShort({ slug });
+      const result = await getOriginalLinkBySlug({ slug });
 
       if (isRight(result)) {
         return reply.status(200).send(unwrapEither(result));

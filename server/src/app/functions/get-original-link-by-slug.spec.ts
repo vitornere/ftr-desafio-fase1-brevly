@@ -4,17 +4,17 @@ import { schema } from '@/infra/db/schemas';
 import { isLeft, isRight, unwrapEither } from '@/shared/either';
 import { seedLinks } from '@/tests/utils/links-fixtures';
 import { ShortLinkNotFoundError } from './errors/short-link-not-found';
-import { getOriginalLinkByShort } from './get-original-link-by-short';
+import { getOriginalLinkBySlug } from './get-original-link-by-slug';
 
-beforeEach(async () => {
-  await db.delete(schema.links);
-});
+describe('getOriginalLinkBySlug', () => {
+  beforeEach(async () => {
+    await db.delete(schema.links);
+  });
 
-describe('getOriginalLinkByShort', () => {
   it('should return the original link', async () => {
     const links = await seedLinks();
 
-    const result = await getOriginalLinkByShort({
+    const result = await getOriginalLinkBySlug({
       slug: links[0].slug,
     });
 
@@ -24,8 +24,8 @@ describe('getOriginalLinkByShort', () => {
     });
   });
 
-  it('should return an error if the short url is not found', async () => {
-    const result = await getOriginalLinkByShort({
+  it('should return an error if the slug is not found', async () => {
+    const result = await getOriginalLinkBySlug({
       slug: 'non-existent-short-url',
     });
 

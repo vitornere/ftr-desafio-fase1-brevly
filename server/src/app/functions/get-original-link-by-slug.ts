@@ -5,17 +5,18 @@ import { db } from '@/infra/db';
 import { schema } from '@/infra/db/schemas';
 import { type Either, makeLeft, makeRight } from '@/shared/either';
 import { ShortLinkNotFoundError } from './errors/short-link-not-found';
+import { incrementClickCountBySlug } from './increment-click-count-by-slug';
 
-const getOriginalLinkByShortInput = z.object({
+const getOriginalLinkBySlugInput = z.object({
   slug: z.string().regex(DEFAULT_SHORT_URL_SLUG_REGEX),
 });
 
-type GetOriginalLinkByShortInput = z.infer<typeof getOriginalLinkByShortInput>;
+type GetOriginalLinkBySlugInput = z.infer<typeof getOriginalLinkBySlugInput>;
 
-export async function getOriginalLinkByShort(
-  input: GetOriginalLinkByShortInput,
+export async function getOriginalLinkBySlug(
+  input: GetOriginalLinkBySlugInput,
 ): Promise<Either<ShortLinkNotFoundError, { originalUrl: string }>> {
-  const { slug } = getOriginalLinkByShortInput.parse(input);
+  const { slug } = getOriginalLinkBySlugInput.parse(input);
 
   const result = await db
     .select()
@@ -26,5 +27,10 @@ export async function getOriginalLinkByShort(
     return makeLeft(new ShortLinkNotFoundError());
   }
 
-  return makeRight({ originalUrl: result[0].originalUrl });
+  const link = result[0];
+
+  // Async increment without awaiting
+  void incrementClickCountBySlug(slug);
+
+  return makeRight({ originalUrl: link.originalUrl });
 }
