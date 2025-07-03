@@ -7,8 +7,8 @@ const envSchema = z.object({
     .default('development'),
   DATABASE_URL: z
     .url()
-    .startsWith('postgres://')
-    .default('postgresql://postgres:postgres@localhost:5432/postgres'),
+    .startsWith('postgres')
+    .default('postgres://postgres:postgres@localhost:5432/postgres'),
   CLOUDFLARE_ACCOUNT_ID: z.string(),
   CLOUDFLARE_ACCESS_KEY_ID: z.string(),
   CLOUDFLARE_SECRET_ACCESS_KEY: z.string(),
