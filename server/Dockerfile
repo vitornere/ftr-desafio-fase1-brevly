@@ -27,11 +27,17 @@ FROM gcr.io/distroless/nodejs22-debian12 AS runner
 USER 1000
 WORKDIR /usr/src/app
 
+# copy doppler binary  
 COPY --from=base /usr/bin/doppler /usr/bin/doppler
-COPY --from=builder /usr/src/app/.doppler /usr/src/app/.doppler
+
+# copy .doppler *and* chown it to UID 1000
+COPY --from=builder --chown=1000:1000 /usr/src/app/.doppler /usr/src/app/.doppler
+
 COPY --from=builder /usr/src/app/dist ./dist
 COPY --from=builder /usr/src/app/package.json ./package.json
 COPY --from=builder /usr/src/app/node_modules ./node_modules
+
+USER 1000
 EXPOSE 3333
 
 ENTRYPOINT ["doppler", "run", "--config-dir", "/usr/src/app/.doppler", "--", "/nodejs/bin/node"]

@@ -1,4 +1,17 @@
 services:
+  # brevly_server:
+  #   container_name: brevly_server
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - "3333:3333"
+  #   depends_on:
+  #     - brevly_server_db
+    # volumes:
+    #   - ./:/usr/src/app
   brevly_server_db:
     container_name: brevly_server_db
     image: postgres:16-alpine
