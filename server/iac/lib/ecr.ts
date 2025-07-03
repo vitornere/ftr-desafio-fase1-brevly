@@ -7,7 +7,7 @@ const ecrRepo = new aws.ecr.Repository('platform-backend-repo', {
   imageScanningConfiguration: {
     scanOnPush: false,
   },
-  imageTagMutability: 'MUTABLE',
+  imageTagMutability: 'IMMUTABLE',
   tags: getTags('ecr'),
 });
 
