@@ -264,3 +264,136 @@ This project is licensed under the ISC License.
 ## 🆘 Support
 
 For support and questions, please open an issue in the repository.
+
+## 📄 Infrastructure as Code (IAC)
+
+This project includes Infrastructure as Code using Pulumi to provision AWS resources for production deployment.
+
+### 🛠️ IAC Technologies
+
+- **Pulumi** - Infrastructure as Code platform
+- **AWS** - Cloud infrastructure provider
+- **TypeScript** - Type-safe infrastructure definitions
+
+### 🏗️ Provisioned Resources
+
+The IAC setup creates the following AWS resources:
+
+- **VPC** - Virtual Private Cloud with public and private subnets
+- **RDS** - PostgreSQL database instance
+- **ECS** - Container orchestration service
+- **ECR** - Container registry for Docker images
+- **ALB** - Application Load Balancer with SSL termination
+- **Route53** - DNS management and domain configuration
+- **Security Groups** - Network security rules
+
+### 📋 IAC Prerequisites
+
+- Pulumi CLI (>= v3): [Install Pulumi](https://www.pulumi.com/docs/get-started/install/)
+- Node.js (>= 14): [Install Node.js](https://nodejs.org/)
+- AWS credentials configured:
+
+  ```bash
+  aws configure
+  # Or set environment variables:
+  export AWS_ACCESS_KEY_ID=your_access_key
+  export AWS_SECRET_ACCESS_KEY=your_secret_key
+  export AWS_REGION=us-east-2
+  ```
+
+### 🚀 Deploying Infrastructure
+
+1. **Navigate to the IAC directory**
+
+   ```bash
+   cd iac
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   pnpm install
+   ```
+
+3. **Configure Pulumi stack**
+
+   ```bash
+   # Set required configuration values
+   pulumi config set aws:region us-east-2
+   pulumi config set rds:dbPassword your_secure_password --secret
+   pulumi config set brevly-aws-iac:certificateArn your_acm_certificate_arn
+   ```
+
+4. **Preview the deployment**
+
+   ```bash
+   pulumi preview
+   ```
+
+5. **Deploy the infrastructure**
+
+   ```bash
+   pulumi up
+   ```
+
+6. **Get deployment outputs**
+
+   ```bash
+   pulumi stack output
+   ```
+
+### 🔧 IAC Configuration
+
+| Configuration Key | Description | Example |
+|------------------|-------------|---------|
+| `aws:region` | AWS region for deployment | `us-east-2` |
+| `rds:dbPassword` | RDS database password | `your_secure_password` |
+| `brevly-aws-iac:certificateArn` | ACM certificate ARN for SSL | `arn:aws:acm:us-east-2:...` |
+
+### 🧹 Cleanup
+
+To destroy all provisioned resources:
+
+```bash
+pulumi destroy
+pulumi stack rm
+```
+
+### 📁 IAC Project Structure
+
+```bash
+iac/
+├── lib/ # Infrastructure modules
+│ ├── alb.ts # Application Load Balancer
+│ ├── ecr.ts # Container Registry
+│ ├── ecs.ts # Container Service
+│ ├── rds.ts # Database
+│ ├── route53.ts # DNS Management
+│ ├── securityGroups.ts # Network Security
+│ ├── tags.ts # Resource Tagging
+│ └── vpc.ts # Virtual Private Cloud
+├── index.ts # Main Pulumi program
+├── outputs.ts # Stack outputs
+├── Pulumi.yaml # Project configuration
+└── Pulumi.staging.yaml # Staging stack configuration
+```
+
+### 🔄 CI/CD Integration
+
+The IAC can be integrated into CI/CD pipelines for automated infrastructure deployment:
+
+```yaml
+# Example GitHub Actions step
+- name: Deploy Infrastructure
+  run: |
+    cd iac
+    pnpm install
+    pulumi stack select staging
+    pulumi up --yes
+```
+
+### 📚 Additional Resources
+
+- [Pulumi Documentation](https://www.pulumi.com/docs/)
+- [AWS Pulumi Provider](https://www.pulumi.com/docs/reference/pkg/aws/)
+- [Pulumi AWSX](https://www.pulumi.com/docs/reference/pkg/awsx/)
