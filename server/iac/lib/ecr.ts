@@ -2,8 +2,8 @@ import * as aws from '@pulumi/aws';
 import { getTags } from './tags';
 
 // Repositório para a imagem Docker do platform-backend
-const ecrRepo = new aws.ecr.Repository('platform-backend-repo', {
-  name: 'platform-backend',
+const ecrRepo = new aws.ecr.Repository('brevly-server-repo', {
+  name: 'brevly-server',
   imageScanningConfiguration: {
     scanOnPush: false,
   },
@@ -11,7 +11,7 @@ const ecrRepo = new aws.ecr.Repository('platform-backend-repo', {
   tags: getTags('ecr'),
 });
 
-new aws.ecr.LifecyclePolicy('platform-backend-policy', {
+new aws.ecr.LifecyclePolicy('brevly-server-policy', {
   repository: ecrRepo.name,
   policy: JSON.stringify({
     rules: [

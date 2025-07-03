@@ -4,7 +4,7 @@ config:
   rds:dbPassword:
     secure: AAABAP7spzxj+E9YZ78horcqzJRXtJagIZxmCzgJ6VjZjUdwXfIIUKe9j7rMdHBLvQ33IA==
   brevly-aws-iac:DOPPLER_TOKEN:
-    secure: AAABAKaSAw6Lb/ks9jILT+Zi6TEN2bt982b6WXykZ9A1idwsJePKijuGRuL3TPZwNpbdyc23hckjTZ4jbE4kwdOhyOfEHyFVGh+4Y3kiFhU=
+    secure: AAABAEE2ZiYvEt7iu2hH/1m4tShBQ4VjDklWa8W3R6pJCywy81fSC6/lpMEuLMMGN0wA6I5blCFzwdUSjaPhmLrsoiZIjaILn4HAM/om3BpR3ube9Q==
   brevly-aws-iac:certificateArn: arn:aws:acm:us-east-2:266798532171:certificate/97b31a98-645e-4c06-827a-3cf149f38d45
 environment:
   - vitornere/staging

@@ -47,7 +47,7 @@ const taskDefinition = new aws.ecs.TaskDefinition('brevly-task', {
   containerDefinitions: pulumi
     .output([
       {
-        name: 'platform-backend',
+        name: 'brevly-server',
         image: pulumi.interpolate`${ecrRepoUrl}:staging`,
         essential: true,
         portMappings: [{ containerPort: 8000 }],
@@ -87,7 +87,7 @@ const service = new aws.ecs.Service('brevly-service', {
   loadBalancers: [
     {
       targetGroupArn: targetGroup.arn,
-      containerName: 'platform-backend',
+      containerName: 'brevly-server',
       containerPort: 8000,
     },
   ],

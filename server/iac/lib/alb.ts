@@ -4,16 +4,6 @@ import { albSg } from './securityGroups';
 import { getTags } from './tags';
 import { publicSubnets, vpc } from './vpc';
 
-// Parâmetros
-const config = new pulumi.Config();
-const domain = 'brevly.com';
-const subdomain = 'api.staging';
-const fullDomain = `${subdomain}.${domain}`;
-
-import { hostedZone } from './route53';
-
-const certificateArn = config.require('certificateArn');
-
 // 2. Application Load Balancer
 const alb = new aws.lb.LoadBalancer('brevly-alb', {
   internal: false,
@@ -41,13 +31,11 @@ const targetGroup = new aws.lb.TargetGroup('brevly-tg', {
   tags: getTags('alb-tg'),
 });
 
-// 4. HTTPS Listener com redirecionamento do HTTP
-const _httpsListener = new aws.lb.Listener('https-listener', {
+// 5. Listener HTTP redirecionando para HTTPS
+const _httpListener = new aws.lb.Listener('http-listener', {
   loadBalancerArn: alb.arn,
-  port: 443,
-  protocol: 'HTTPS',
-  sslPolicy: 'ELBSecurityPolicy-2016-08',
-  certificateArn: certificateArn,
+  port: 80,
+  protocol: 'HTTP',
   defaultActions: [
     {
       type: 'forward',
@@ -57,36 +45,4 @@ const _httpsListener = new aws.lb.Listener('https-listener', {
   tags: getTags('alb-listener'),
 });
 
-// 5. Listener HTTP redirecionando para HTTPS
-const _httpListener = new aws.lb.Listener('http-listener', {
-  loadBalancerArn: alb.arn,
-  port: 80,
-  protocol: 'HTTP',
-  defaultActions: [
-    {
-      type: 'redirect',
-      redirect: {
-        port: '443',
-        protocol: 'HTTPS',
-        statusCode: 'HTTP_301',
-      },
-    },
-  ],
-  tags: getTags('alb-listener'),
-});
-
-// 6. Registro no Route53 apontando para o ALB
-const _dnsRecord = new aws.route53.Record('staging-dns', {
-  name: fullDomain,
-  zoneId: hostedZone.id,
-  type: 'A',
-  aliases: [
-    {
-      name: alb.dnsName,
-      zoneId: alb.zoneId,
-      evaluateTargetHealth: true,
-    },
-  ],
-});
-
-export { alb, targetGroup, fullDomain };
+export { alb, targetGroup };
