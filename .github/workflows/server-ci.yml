@@ -40,7 +40,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run Lint
-        run: biome check --no-errors-on-unmatched --files-ignore-unknown=true --colors=off
+        run: pnpm exec biome check --no-errors-on-unmatched --files-ignore-unknown=true --colors=off
 
   tests:
     name: Run E2E Server Tests
