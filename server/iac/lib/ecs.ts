@@ -50,7 +50,7 @@ const taskDefinition = new aws.ecs.TaskDefinition('brevly-task', {
         name: 'brevly-server',
         image: pulumi.interpolate`${ecrRepoUrl}:staging`,
         essential: true,
-        portMappings: [{ containerPort: 8000 }],
+        portMappings: [{ containerPort: 3333 }],
         environment: [
           { name: 'DOPPLER_TOKEN', value: dopplerToken },
           { name: 'environment', value: 'staging' },
@@ -88,7 +88,7 @@ const service = new aws.ecs.Service('brevly-service', {
     {
       targetGroupArn: targetGroup.arn,
       containerName: 'brevly-server',
-      containerPort: 8000,
+      containerPort: 3333,
     },
   ],
   tags: getTags('ecs-service'),

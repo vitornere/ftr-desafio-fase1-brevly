@@ -23,8 +23,8 @@ const ecsSg = new aws.ec2.SecurityGroup('ecs-sg', {
   ingress: [
     {
       protocol: 'tcp',
-      fromPort: 8000, // porta do Django container
-      toPort: 8000,
+      fromPort: 3333,
+      toPort: 3333,
       securityGroups: [albSg.id],
     },
   ],

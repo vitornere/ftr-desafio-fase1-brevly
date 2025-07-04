@@ -14,14 +14,13 @@ const alb = new aws.lb.LoadBalancer('brevly-alb', {
   preserveHostHeader: true,
 });
 
-// 3. Target Group (porta 8000, usada no container do Django)
 const targetGroup = new aws.lb.TargetGroup('brevly-tg', {
-  port: 8000,
+  port: 3333,
   protocol: 'HTTP',
   targetType: 'ip',
   vpcId: vpc.id,
   healthCheck: {
-    path: '/api/health/',
+    path: '/health/',
     interval: 30,
     timeout: 5,
     healthyThreshold: 2,

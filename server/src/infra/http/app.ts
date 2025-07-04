@@ -16,7 +16,9 @@ import { listShortLinksRoute } from './routes/list-short-links';
 import { transformSwaggerSchema } from './transform-swagger-schema';
 
 export function buildServer() {
-  const server = fastify();
+  const server = fastify({
+    ignoreTrailingSlash: true,
+  });
 
   server.setSerializerCompiler(serializerCompiler);
   server.setValidatorCompiler(validatorCompiler);
@@ -48,6 +50,12 @@ export function buildServer() {
       },
     },
     transform: transformSwaggerSchema,
+  });
+
+  server.get('/health', (req, res) => {
+    res.send({
+      status: 'ok',
+    });
   });
 
   server.register(createShortLinkRoute);
