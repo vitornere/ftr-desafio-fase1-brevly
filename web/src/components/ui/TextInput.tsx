@@ -1,4 +1,5 @@
 import { tv } from "tailwind-variants";
+import { WarningIcon } from '@phosphor-icons/react'
 
 const textField = tv({
   base: "flex flex-col gap-2"
@@ -45,12 +46,15 @@ type Props = React.InputHTMLAttributes<HTMLInputElement> & {
   name: string,
   default?: boolean,
   active?: boolean,
-  error?: boolean,
+  error?: string,
 }
 
-export default function TextField({ id, className, label, active, error, ...props }: Props) {
-  return <div className={textField({ className })}>
-    {label && <label htmlFor={id} className={textFieldLabel({ error })}>{label}</label>}
-    <input type="text" id={id} className={textFieldInput({ error })} {...props} />
-  </div>
+export default function TextField({ id, className, label, error, ...props }: Props) {
+  return (
+    <div className={textField({ className })}>
+      {label && <label htmlFor={id} className={textFieldLabel({ error: Boolean(error) })}>{label}</label>}
+      <input type="text" id={id} className={textFieldInput({ error: Boolean(error) })} {...props} />
+      {error && <p className="typography-sm text-gray-500 flex items-center gap-1"><WarningIcon size={16} className="text-danger" />{error}</p>}
+    </div>
+  )
 }

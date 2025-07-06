@@ -62,3 +62,7 @@
     font-weight: 400;
     text-transform: uppercase;
 }
+
+body {
+    background-color: var(--color-gray-200);
+}
