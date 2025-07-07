@@ -6,7 +6,7 @@ import { publicSubnets, vpc } from './vpc';
 
 const config = new pulumi.Config();
 
-const certificateArn = config.get("certificateArn");
+const certificateArn = config.get('certificateArn');
 
 // 2. Application Load Balancer
 const alb = new aws.lb.LoadBalancer('brevly-alb', {
@@ -35,58 +35,66 @@ const targetGroup = new aws.lb.TargetGroup('brevly-tg', {
 });
 
 if (certificateArn) {
-  const httpsListener = new aws.lb.Listener("https-listener", {
+  new aws.lb.Listener('https-listener', {
     loadBalancerArn: alb.arn,
     port: 443,
-    protocol: "HTTPS",
-    sslPolicy: "ELBSecurityPolicy-2016-08",
+    protocol: 'HTTPS',
+    sslPolicy: 'ELBSecurityPolicy-2016-08',
     certificateArn: certificateArn,
-    defaultActions: [{
-      type: "forward",
-      targetGroupArn: targetGroup.arn,
-    }],
-    tags: getTags("alb-listener"),
+    defaultActions: [
+      {
+        type: 'forward',
+        targetGroupArn: targetGroup.arn,
+      },
+    ],
+    tags: getTags('alb-listener'),
   });
 
-  const httpListener = new aws.lb.Listener("http-listener", {
+  const httpListener = new aws.lb.Listener('http-listener', {
     loadBalancerArn: alb.arn,
     port: 80,
-    protocol: "HTTP",
-    defaultActions: [{
-      type: "redirect",
-      redirect: {
-        port: "443",
-        protocol: "HTTPS",
-        statusCode: "HTTP_301",
+    protocol: 'HTTP',
+    defaultActions: [
+      {
+        type: 'redirect',
+        redirect: {
+          port: '443',
+          protocol: 'HTTPS',
+          statusCode: 'HTTP_301',
+        },
       },
-    }],
-    tags: getTags("alb-listener"),
+    ],
+    tags: getTags('alb-listener'),
   });
 
-  new aws.lb.ListenerRule("http-api-forward", {
+  new aws.lb.ListenerRule('http-api-forward', {
     listenerArn: httpListener.arn,
     priority: 10,
-    conditions: [{
-      pathPattern: { values: ["/api/*"] },
-    }],
-    actions: [{
-      type: "forward",
-      targetGroupArn: targetGroup.arn,
-    }],
+    conditions: [
+      {
+        pathPattern: { values: ['/api/*'] },
+      },
+    ],
+    actions: [
+      {
+        type: 'forward',
+        targetGroupArn: targetGroup.arn,
+      },
+    ],
   });
 } else {
-  const httpListener = new aws.lb.Listener("http-listener", {
+  new aws.lb.Listener('http-listener', {
     loadBalancerArn: alb.arn,
     port: 80,
-    protocol: "HTTP",
-    defaultActions: [{
-      type: "forward",
-      targetGroupArn: targetGroup.arn,
-    }],
-    tags: getTags("alb-listener"),
+    protocol: 'HTTP',
+    defaultActions: [
+      {
+        type: 'forward',
+        targetGroupArn: targetGroup.arn,
+      },
+    ],
+    tags: getTags('alb-listener'),
   });
 }
-
-
 
 export { alb, targetGroup };
