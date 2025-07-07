@@ -3,7 +3,7 @@ import { type CreateShortLink, type ShortLink } from "@/types/short-links"
 import { API_URL } from "@/utils/constants"
 
 const api = axios.create({
-  baseURL: API_URL
+  baseURL: API_URL ?? '/api'
 })
 
 export async function listShortLinks(): Promise<ShortLink[]> {
