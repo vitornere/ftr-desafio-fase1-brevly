@@ -1,25 +1,35 @@
 import { CopyIcon, TrashIcon } from "@phosphor-icons/react";
 import Button from "./ui/Button";
-import { useState } from "react";
 import * as ScrollArea from "@radix-ui/react-scroll-area";
+import { useListShortLinks } from "@/queries/short-links/list-short-links";
+import { getShortUrl } from "@/utils/short-url";
+import { copyToClipboard } from "@/utils/copy-to-clipboard";
+import { useDeleteShortLink } from "@/queries/short-links/delete-short-link";
+import { toast } from "react-toastify";
 
 export default function Links() {
-    const [links, setLinks] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+    const { data: links } = useListShortLinks();
+    const { deleteShortLink } = useDeleteShortLink();
+
+    console.log(links)
     
     return (
         <ScrollArea.Root className="flex flex-col gap-4 max-h-[50vh] overflow-hidden">
             <ScrollArea.Viewport className="max-h-[50vh]">
-                {links.map((link) => (
+                {links?.map((link) => (
                     <div className="flex justify-between items-center py-4 border-t border-gray-200">
                         <div className="flex flex-col gap-2">
-                            <a className="typography-md text-blue" href="brev.ly/1231231">brev.ly/1231231</a>
-                            <span className="typography-sm text-gray-500">devsite.portflio.com.br/devname-12321</span>
+                            <a className="typography-md text-blue" href={getShortUrl(link.slug)} target="_blank">{getShortUrl(link.slug)}</a>
+                            <span className="typography-sm text-gray-500">{link.originalUrl}</span>
                         </div>
                         <div className="flex items-center gap-4">
-                            <span className="typography-sm text-gray-500">30 acessos</span>
+                            <span className="typography-sm text-gray-500">{link.clicks} acesso{link.clicks === 1 ? '' : 's'}</span>
                             <div className="flex gap-1">
-                                <Button className="h-8" icon={<CopyIcon size={16} className="text-gray-600" />} secondary />
-                                <Button className="h-8" icon={<TrashIcon size={16} className="text-gray-600" />} secondary />
+                                <Button className="h-8" icon={<CopyIcon size={16} className="text-gray-600" />} secondary onClick={() => {
+                                  copyToClipboard(getShortUrl(link.slug))
+                                  toast.success('Link copiado para a área de transferência')
+                                }}   />
+                                <Button className="h-8" icon={<TrashIcon size={16} className="text-gray-600" />} secondary onClick={() => deleteShortLink(link.slug)} />
                             </div>
                         </div>
                     </div>

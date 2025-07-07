@@ -47,13 +47,35 @@ type Props = React.InputHTMLAttributes<HTMLInputElement> & {
   default?: boolean,
   active?: boolean,
   error?: string,
+  prefix?: string,
 }
 
-export default function TextField({ id, className, label, error, ...props }: Props) {
+export default function TextField({ id, className, label, error, prefix, style, ...props }: Props) {
+  const extraPadding = prefix ? `${prefix.length}ch` : undefined
+
   return (
     <div className={textField({ className })}>
       {label && <label htmlFor={id} className={textFieldLabel({ error: Boolean(error) })}>{label}</label>}
-      <input type="text" id={id} className={textFieldInput({ error: Boolean(error) })} {...props} />
+      <div className="relative w-full">
+        {prefix && (
+          <span
+            className="pointer-events-none absolute left-4 top-[1.563rem] -translate-y-1/2 typography-md text-gray-400"
+          >
+            {prefix}
+          </span>
+        )}
+        <input
+          type="text" 
+          id={id} 
+          className={textFieldInput({ error: Boolean(error) })} 
+          style={{
+            ...style,
+            paddingLeft: prefix
+              ? `calc(${extraPadding} - 0.8rem)`
+              : undefined,
+          }}
+          {...props} />
+      </div>
       {error && <p className="typography-sm text-gray-500 flex items-center gap-1"><WarningIcon size={16} className="text-danger" />{error}</p>}
     </div>
   )

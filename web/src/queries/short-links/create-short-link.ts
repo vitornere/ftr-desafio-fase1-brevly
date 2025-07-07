@@ -2,18 +2,30 @@ import { useMutation, type UseMutationOptions } from "@tanstack/react-query"
 import { createShortLink } from "@/http/short-links"
 import { type CreateShortLink } from "@/types/short-links"
 import { invalidateShortLinks } from "./list-short-links"
+import { toast } from "react-toastify"
+import { AxiosError } from "axios"
 
 export function useCreateShortLink(
-    options?: Omit<UseMutationOptions<{ id: string }, Error, CreateShortLink, unknown>, 'mutationFn' | 'onSuccess'>
+  options?: Omit<UseMutationOptions<{ id: string }, Error, CreateShortLink, unknown>, 'mutationFn' | 'onSuccess'>
 ) {
-    const mutation = useMutation({
-        mutationFn: (data: CreateShortLink) => createShortLink(data),
-        onSuccess: () => invalidateShortLinks(),
-        ...(options ?? {}),
-    })
+  const mutation = useMutation({
+    mutationFn: async (data: CreateShortLink) => createShortLink(data),
+    onSuccess: async () => {
+      await invalidateShortLinks()
+      toast.success('Link salvo com sucesso')
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError && error.response?.status === 400) {
+        toast.error(error.response?.data.message)
+      } else {
+        toast.error('Erro ao salvar link')
+      }
+    },
+    ...(options ?? {}),
+  })
 
-    return {
-        createShortLink: mutation.mutate,
-        ...mutation,
-    }
+  return {
+    createShortLink: mutation.mutateAsync,
+    ...mutation,
+  }
 }

@@ -55,7 +55,7 @@ describe('exportShortLinksCsv', () => {
       ['Original URL', 'Short URL', 'Clicks', 'Created At'],
       ...links.map((link) => [
         link.originalUrl,
-        `${env.DEFAULT_SHORT_URL_DOMAIN}/${link.slug}`,
+        `${env.DEFAULT_SHORT_URL}/${link.slug}`,
         String(link.clicks),
         link.createdAt.toISOString(),
       ]),

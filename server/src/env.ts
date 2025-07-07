@@ -14,7 +14,7 @@ const envSchema = z.object({
   CLOUDFLARE_SECRET_ACCESS_KEY: z.string(),
   CLOUDFLARE_BUCKET: z.string(),
   CLOUDFLARE_PUBLIC_URL: z.url(),
-  DEFAULT_SHORT_URL_DOMAIN: z
+  DEFAULT_SHORT_URL: z
     .url()
     .default(
       process.env.NODE_ENV === 'production'

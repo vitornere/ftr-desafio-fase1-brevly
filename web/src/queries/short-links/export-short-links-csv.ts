@@ -1,12 +1,28 @@
-import { useQuery, type UndefinedInitialDataOptions } from "@tanstack/react-query"
+import { useMutation, type UseMutationOptions } from "@tanstack/react-query"
 import { exportShortLinksCsv } from "@/http/short-links"
+import { toast } from "react-toastify"
+import { AxiosError } from "axios"
 
 export function useExportShortLinksCsv(
-    options?: Omit<UndefinedInitialDataOptions<{ exportUrl: string }, Error, { exportUrl: string }, string[]>, 'queryKey' | 'queryFn'>
+  options?: Omit<UseMutationOptions<{ exportUrl: string }, Error, void, unknown>, 'mutationFn' | 'onSuccess'>
 ) {
-    return useQuery({
-        queryKey: ['short-links', 'export'],
-        queryFn: () => exportShortLinksCsv(),
-        ...(options ?? {}),
-    })
+  const mutation = useMutation({
+    mutationFn: async () => exportShortLinksCsv(),
+    onSuccess: async () => {
+      toast.success('CSV exportado com sucesso')
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError && error.response?.status === 400) {
+        toast.error(error.response?.data.message)
+      } else {
+        toast.error('Erro ao exportar CSV')
+      }
+    },
+    ...(options ?? {}),
+  })
+
+  return {
+    exportShortLinksCsv: mutation.mutateAsync,
+    ...mutation,
+  }
 }

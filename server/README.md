@@ -54,7 +54,7 @@ CLOUDFLARE_BUCKET=your_bucket_name
 CLOUDFLARE_PUBLIC_URL=https://your-public-url.com
 
 # Short URL Domain
-DEFAULT_SHORT_URL_DOMAIN=http://localhost:3000
+DEFAULT_SHORT_URL=http://localhost:3000
 ```
 
 ## 🚀 Quick Start

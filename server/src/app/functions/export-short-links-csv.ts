@@ -45,7 +45,7 @@ export async function exportShortLinksCsv(): Promise<
         for (const row of rows) {
           this.push({
             ...row,
-            short_url: `${env.DEFAULT_SHORT_URL_DOMAIN}/${row.slug}`,
+            short_url: `${env.DEFAULT_SHORT_URL}/${row.slug}`,
             created_at: new Date(row.created_at).toISOString(),
           });
         }

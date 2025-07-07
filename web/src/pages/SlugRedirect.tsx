@@ -1,8 +1,27 @@
-import { useParams } from "wouter";
+import { useLocation, useParams } from "wouter";
 import LogoIcon from "@/assets/Logo_Icon.svg";
+import { useGetShortLinkBySlug } from "@/queries/short-links/get-short-link-by-slug";
+import { useEffect } from "react";
 
 export default function SlugRedirect() {
   const { slug } = useParams();
+  const [, navigate] = useLocation();
+  const { data, isError } = useGetShortLinkBySlug(slug!, {
+    retry: false,
+    refetchOnWindowFocus: false,
+  })
+
+  useEffect(() => {
+    if (isError) {
+      navigate('/404', { replace: true })
+    }
+  }, [isError, navigate])
+
+  useEffect(() => {
+    if (data) {
+      window.location.href = data.originalUrl;
+    }
+  }, [data]);
 
   return (
     <div className="h-dvh flex justify-center items-center">

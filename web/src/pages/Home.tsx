@@ -1,12 +1,41 @@
-import { useState } from "react";
+import { useForm } from "@tanstack/react-form";
 import Button from "@/components/ui/Button";
 import TextField from "@/components/ui/TextInput";
 import { DownloadIcon, LinkIcon } from "@phosphor-icons/react";
 import Logo from "@/assets/Logo.svg";
 import Links from "@/components/Links";
+import { useListShortLinks } from "@/queries/short-links/list-short-links";
+import { z } from "zod";
+import { useCreateShortLink } from "@/queries/short-links/create-short-link";
+import { useExportShortLinksCsv } from "@/queries/short-links/export-short-links-csv";
+import { downloadUrl } from "@/utils/download-url";
+import { APP_URL } from "@/utils/constants";
+
+const formSchema = z.object({
+  originalUrl: z.string().url(),
+  slug: z.string().min(1),
+});
 
 export default function Home() {
-  const [links, setLinks] = useState([1]);
+  const { data: links } = useListShortLinks();
+  const { exportShortLinksCsv } = useExportShortLinksCsv();
+  const { createShortLink, } = useCreateShortLink();
+  const form = useForm({
+    validators: {
+      onChange: formSchema,
+    },
+    defaultValues: {
+      originalUrl: "",
+      slug: "",
+    },
+    onSubmit: async ({ formApi, value}) => {
+      await createShortLink({
+        originalUrl: value.originalUrl,
+        slug: value.slug,
+      });
+      formApi.reset()
+    },
+  });
 
   return (
     <div className="h-dvh flex justify-center">
@@ -16,29 +45,67 @@ export default function Home() {
         </div>
 
         <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6 mb-12">
-          <div className="flex flex-col p-8 gap-4 bg-gray-100 w-11/12 lg:w-2/5">
-            <p className="typography-lg text-gray-600">Novo link</p>
-            <TextField id="linkOriginal" name="linkOriginal" label="Link Original" placeholder="www.exemplo.com" />
-            <TextField id="linkEncurtado" name="linkEncurtado" label="Link Encurtado" placeholder="brev.ly/" />
-            <Button>
-              Salvar link
-            </Button>
-          </div>
+          <form className="flex flex-col p-8 gap-4 bg-gray-100 w-11/12 lg:w-2/5" onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            form.handleSubmit();
+          }}>
+            <>
+              <p className="typography-lg text-gray-600">Novo link</p>
+              <form.Field name="originalUrl"
+                children={(field) => (
+                  <TextField 
+                    id={field.name}
+                    name={field.name}
+                    label="Link Original"
+                    placeholder="www.exemplo.com"
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    onBlur={field.handleBlur}
+                  />
+                )}
+              />
+              <form.Field name="slug"
+                children={(field) => (
+                  <TextField 
+                    id={field.name}
+                    name={field.name}
+                    label="Link Encurtado"
+                    prefix={`${APP_URL}/`}
+                    value={field.state.value}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    onBlur={field.handleBlur}
+                  />
+                )}
+              />
+              <form.Subscribe
+                selector={(state) => [state.canSubmit, state.isSubmitting]}
+                children={([canSubmit, isSubmitting]) => (
+                  <Button type="submit" disabled={!canSubmit || isSubmitting}>
+                    {isSubmitting ? 'Salvando...' : 'Salvar link'}
+                  </Button>
+                )}
+              />
+            </>
+          </form>
 
           <div className="flex flex-col bg-gray-100 p-8 gap-4 w-11/12 lg:w-3/5">
             <div className="flex justify-between items-center gap-4">
               <p className="typography-lg text-gray-600">Meus links</p>
-              <Button className="h-8" icon={<DownloadIcon size={16} className="text-gray-600" />} secondary>Baixar CSV</Button>
+              <Button className="h-8" icon={<DownloadIcon size={16} className="text-gray-600" />} secondary onClick={async () => {
+                const { exportUrl } = await exportShortLinksCsv();
+                await downloadUrl(exportUrl);
+              }}>Baixar CSV</Button>
             </div>
 
-            {links.length === 0 && (
+            {links === undefined || links.length === 0 && (
               <div className="flex flex-col items-center justify-center gap-2 border-t border-gray-200 pt-4">
                 <LinkIcon size={32} className="text-gray-400" />
                 <p className="typography-xs text-gray-500">Ainda não existem links cadastrados</p>
               </div>
             )}
 
-            {links.length > 0 && (
+            {links && links.length > 0 && (
               <Links />
             )}
           </div>

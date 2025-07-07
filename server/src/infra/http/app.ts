@@ -40,6 +40,8 @@ export function buildServer() {
 
   server.register(fastifyCors, {
     origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type'],
   });
   server.register(fastifyMultipart);
   server.register(fastifySwagger, {
@@ -52,7 +54,7 @@ export function buildServer() {
     transform: transformSwaggerSchema,
   });
 
-  server.get('/health', (req, res) => {
+  server.get('/health', (_reqq, res) => {
     res.send({
       status: 'ok',
     });
