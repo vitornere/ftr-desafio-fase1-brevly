@@ -3,11 +3,9 @@ import postgres from 'postgres';
 import { env } from '@/env';
 import { schema } from './schemas';
 
-const isProduction = process.env.NODE_ENV === 'production'
+const isProduction = process.env.NODE_ENV === 'production';
 
-const sslOption = isProduction
-  ? { rejectUnauthorized: false }
-  : false
+const sslOption = isProduction ? { rejectUnauthorized: false } : false;
 
 export const pg = postgres(env.DATABASE_URL, {
   ssl: sslOption,
