@@ -3,11 +3,13 @@ import postgres from 'postgres';
 import { env } from '@/env';
 import { schema } from './schemas';
 
-console.log(env.DATABASE_URL);
+const isProduction = process.env.NODE_ENV === 'production'
+
+const sslOption = isProduction
+  ? { rejectUnauthorized: false }
+  : false
 
 export const pg = postgres(env.DATABASE_URL, {
-  ssl: {
-    rejectUnauthorized: false,
-  },
+  ssl: sslOption,
 });
 export const db = drizzle(pg, { schema });
