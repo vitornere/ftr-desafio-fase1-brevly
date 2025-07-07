@@ -17,6 +17,7 @@ describe('GET /links', () => {
       originalUrl: link.originalUrl,
       slug: link.slug,
       clicks: link.clicks,
+      createdAt: link.createdAt,
     }));
 
     vi.spyOn(listShortLinksModule, 'listShortLinks').mockResolvedValue(

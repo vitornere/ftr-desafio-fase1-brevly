@@ -16,6 +16,7 @@ export const listShortLinksRoute: FastifyPluginAsyncZod = async (server) => {
               originalUrl: z.url(),
               slug: z.string(),
               clicks: z.number(),
+              createdAt: z.date(),
             }),
           ),
         },
