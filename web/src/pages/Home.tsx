@@ -9,7 +9,6 @@ import { z } from "zod";
 import { useCreateShortLink } from "@/queries/short-links/create-short-link";
 import { useExportShortLinksCsv } from "@/queries/short-links/export-short-links-csv";
 import { downloadUrl } from "@/utils/download-url";
-import { APP_URL } from "@/utils/constants";
 
 const formSchema = z.object({
   originalUrl: z.string().url(),
@@ -71,7 +70,7 @@ export default function Home() {
                     id={field.name}
                     name={field.name}
                     label="Link Encurtado"
-                    prefix={`${APP_URL}/`}
+                    prefix="brev.ly/"
                     value={field.state.value}
                     onChange={(e) => field.handleChange(e.target.value)}
                     onBlur={field.handleBlur}

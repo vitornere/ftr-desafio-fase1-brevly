@@ -19,7 +19,7 @@ export default function Links() {
                 {links?.map((link) => (
                     <div className="flex justify-between items-center py-4 border-t border-gray-200">
                         <div className="flex flex-col gap-2">
-                            <a className="typography-md text-blue" href={getShortUrl(link.slug)} target="_blank">{getShortUrl(link.slug)}</a>
+                            <a className="typography-md text-blue" href={getShortUrl(link.slug)} target="_blank">{`brev.ly/${link.slug}`}</a>
                             <span className="typography-sm text-gray-500">{link.originalUrl}</span>
                         </div>
                         <div className="flex items-center gap-4">

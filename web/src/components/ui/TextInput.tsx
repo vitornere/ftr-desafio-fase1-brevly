@@ -59,7 +59,7 @@ export default function TextField({ id, className, label, error, prefix, style, 
       <div className="relative w-full">
         {prefix && (
           <span
-            className="pointer-events-none absolute left-4 top-[1.563rem] -translate-y-1/2 typography-md text-gray-400"
+            className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 typography-md text-gray-400"
           >
             {prefix}
           </span>
@@ -71,7 +71,7 @@ export default function TextField({ id, className, label, error, prefix, style, 
           style={{
             ...style,
             paddingLeft: prefix
-              ? `calc(${extraPadding} - 0.8rem)`
+              ? `calc(${extraPadding} + 1rem)`
               : undefined,
           }}
           {...props} />
