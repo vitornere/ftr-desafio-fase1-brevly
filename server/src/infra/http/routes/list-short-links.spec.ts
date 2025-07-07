@@ -30,6 +30,13 @@ describe('GET /links', () => {
     });
 
     expect(response.statusCode).toBe(200);
-    expect(response.json()).toEqual(links);
+    expect(response.json()).toEqual(
+      links.map((link) => ({
+        originalUrl: link.originalUrl,
+        slug: link.slug,
+        clicks: link.clicks,
+        createdAt: link.createdAt.toISOString(),
+      })),
+    );
   });
 });
