@@ -5,6 +5,6 @@ config:
     secure: AAABAP7spzxj+E9YZ78horcqzJRXtJagIZxmCzgJ6VjZjUdwXfIIUKe9j7rMdHBLvQ33IA==
   brevly-aws-iac:DOPPLER_TOKEN:
     secure: AAABAEE2ZiYvEt7iu2hH/1m4tShBQ4VjDklWa8W3R6pJCywy81fSC6/lpMEuLMMGN0wA6I5blCFzwdUSjaPhmLrsoiZIjaILn4HAM/om3BpR3ube9Q==
-  brevly-aws-iac:certificateArn: arn:aws:acm:us-east-2:470147111364:certificate/3e1a6455-7e03-41cb-a610-cdd21662c9f5
+  brevly-aws-iac:certificateArn: arn:aws:acm:us-east-2:470147111364:certificate/c5a14ce8-214a-4494-9cdf-1af19bb58182
 environment:
   - vitornere/staging

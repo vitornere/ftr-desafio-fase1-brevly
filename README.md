@@ -4,7 +4,7 @@ A modern URL shortener application with a React frontend and Node.js backend. Cr
 
 ## 🚀 Live Demo
 
-**Try it out**: [https://main.d2r5p6qj56pvt3.amplifyapp.com/](https://main.d2r5p6qj56pvt3.amplifyapp.com/)
+**Try it out**: [https://brevly.nereswe.com/](https://brevly.nereswe.com/)
 
 ## ✨ Features
 
