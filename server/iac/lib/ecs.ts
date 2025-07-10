@@ -15,6 +15,7 @@ const ecsCluster = new aws.ecs.Cluster('brevly-cluster', {
 });
 
 const ecsTaskExecutionRole = new aws.iam.Role('ecs-task-execution-role', {
+  name: 'ecs-task-execution-role',
   assumeRolePolicy: aws.iam.assumeRolePolicyForPrincipal({
     Service: 'ecs-tasks.amazonaws.com',
   }),
